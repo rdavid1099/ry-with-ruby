@@ -8,24 +8,20 @@ class RyArrayTest < TestHelper
 
   def test_array_can_be_initialized_with_number_of_cells_default_to_nil
     new_array(count: 3)
+    assert_equal 3, @array.count
     3.times { |i| assert_nil @array[i] }
   end
-  # ::[]
-  # ::new
-  # ::try_convert
-  #&
-  #*
-  #+
-  #-
-  #<<
-  #<=>
-  #==
-  #[]
+
+  def test_array_can_be_initialized_with_number_of_cells_default_to_data
+    new_array(count: 3, initial_data: 4)
+    assert_equal 3, @array.count
+    3.times { |i| assert_equal 4, @array[i] }
+  end
+
   #[]=
   #abbrev
   #assoc
   #at
-  #bsearch
   #clear
   #collect
   #collect!

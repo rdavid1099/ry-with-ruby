@@ -45,7 +45,7 @@ module Ry
 
       def all_string
         result = ''
-        return nil unless current_node = @initial
+        return '' unless current_node = @initial
         loop do
           result += current_node.next ? "#{current_node.data}, " : current_node.data
           return result if current_node.next.nil?
