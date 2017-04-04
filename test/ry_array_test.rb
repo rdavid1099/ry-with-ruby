@@ -47,8 +47,6 @@ class RyArrayTest < TestHelper
     assert_equal 9, @array.count
   end
 
-  #[]=
-  #abbrev
   #assoc
   #at
   #clear

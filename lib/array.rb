@@ -16,7 +16,7 @@ module Ry
         last_node = get_node
         last_node.next = Ry::Node.new(data, last_node)
       end
-      eval(inspect)
+      inspect
     end
 
     def [](index)
@@ -32,7 +32,7 @@ module Ry
         node = get_node(index)
         node.data = data
       end
-      eval(inspect)
+      inspect
     end
 
     def inspect
@@ -68,19 +68,9 @@ module Ry
         result = ''
         return result unless current_node = @initial
         loop do
-          result += "#{sanitize(current_node.data)}, "
+          result += "#{current_node.data.inspect}, "
           return result.chomp(', ') if current_node.next.nil?
           current_node = current_node.next
-        end
-      end
-
-      def sanitize(data)
-        if data.nil?
-          'nil'
-        elsif data.is_a? String
-          "\"#{data}\""
-        else
-          data
         end
       end
   end
