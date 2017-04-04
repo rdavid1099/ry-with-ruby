@@ -53,16 +53,26 @@ module Ry
         result = ''
         return result unless current_node = @initial
         loop do
-          result += (current_node.next ? "#{current_node.data}, " : "#{current_node.data}")
-          return result if current_node.next.nil?
+          result += "#{sanitize(current_node.data)}, "
+          return result.chomp(', ') if current_node.next.nil?
           current_node = current_node.next
+        end
+      end
+
+      def sanitize(data)
+        if data.nil?
+          'nil'
+        elsif data.is_a? String
+          "\"#{data}\""
+        else
+          data
         end
       end
   end
 end
-
-class NilClass
-  def to_s
-    'nil'
-  end
-end
+#
+# class NilClass
+#   def to_s
+#     'nil'
+#   end
+# end
