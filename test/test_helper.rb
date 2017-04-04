@@ -6,7 +6,6 @@ require 'pry'
 class TestHelper < Minitest::Test
   def new_array(**data)
     data[:count] ||= 0
-    data[:initial_data] ||= 'nil'
     @array = Ry::Array.new(data[:count], data[:initial_data])
   end
 

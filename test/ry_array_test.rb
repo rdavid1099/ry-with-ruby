@@ -8,7 +8,6 @@ class RyArrayTest < TestHelper
 
   def test_array_can_be_initialized_with_number_of_cells_default_to_nil
     new_array(count: 3)
-
     3.times { |i| assert_nil @array[i] }
   end
   # ::[]
