@@ -5,8 +5,26 @@ module Ry
       size > 0 ? initialize_array(size, initial_data) : '[]'
     end
 
-    def initialize_array(size, initial_data)
-      size.times { @initial ? push(initial_data) : (@initial = Ry::Node.new(initial_data)) }
+    def each(&block)
+      return self unless current_node = @initial
+      loop do
+        block.call(current_node.data)
+        break unless current_node.next
+        current_node = current_node.next
+      end
+      self
+    end
+
+    def each_with_index(&block)
+      return self unless current_node = @initial
+      counter = 0
+      loop do
+        block.call(current_node.data, counter)
+        break unless current_node.next
+        counter += 1
+        current_node = current_node.next
+      end
+      self
     end
 
     def push(data)
@@ -16,7 +34,7 @@ module Ry
         last_node = get_node
         last_node.next = Ry::Node.new(data, last_node)
       end
-      inspect
+      self
     end
 
     def [](index)
@@ -32,11 +50,7 @@ module Ry
         node = get_node(index)
         node.data = data
       end
-      inspect
-    end
-
-    def inspect
-      "[#{all_string}]"
+      self
     end
 
     def count
@@ -49,7 +63,15 @@ module Ry
       end
     end
 
+    def inspect
+      "[#{all_string}]"
+    end
+
     private
+      def initialize_array(size, initial_data)
+        size.times { @initial ? push(initial_data) : (@initial = Ry::Node.new(initial_data)) }
+      end
+
       def fill_out_indices(index, data)
         last_node = get_node
         (index - count).times do

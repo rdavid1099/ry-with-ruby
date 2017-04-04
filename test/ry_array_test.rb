@@ -47,6 +47,28 @@ class RyArrayTest < TestHelper
     assert_equal 9, @array.count
   end
 
+  def test_iterating_array_using_each
+    new_array(count: 3, initial_data: 4)
+    result = 0
+    return_array = @array.each do |data|
+      result += data
+    end
+
+    assert_equal 12, result
+    assert_equal return_array, @array
+  end
+
+  def test_iterating_array_using_each_with_index
+    new_array(count: 4, initial_data: 4)
+    result = 0
+    return_array = @array.each_with_index do |data, index|
+      result += (data * index)
+    end
+
+    assert_equal 24, result
+    assert_equal return_array, @array
+  end
+
   #assoc
   #at
   #clear
@@ -64,7 +86,6 @@ class RyArrayTest < TestHelper
   #delete_if
   #drop
   #drop_while
-  #each
   #each_index
   #empty?
   #eql?
