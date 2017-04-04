@@ -10,21 +10,29 @@ module Ry
     end
 
     def push(data)
-      return @initial = Ry::Node.new(data) unless @initial
-      last_node = get_last_node
-      last_node.next = Ry::Node.new(data, last_node)
+      unless @initial
+        @initial = Ry::Node.new(data)
+      else
+        last_node = get_node
+        last_node.next = Ry::Node.new(data, last_node)
+      end
       eval(inspect)
     end
 
     def [](index)
       return nil if index >= count
-      node = "@initial" + ('.next' * index) + '.data'
-      eval(node)
+      node = get_node(index)
+      node.data
     end
 
-    def []=(index, value)
-      return fill_out_indices(index, value) if index >= count
-      node = eval("@initial" + ('.next' * index))
+    def []=(index, data)
+      if index >= count
+        fill_out_indices(index, data)
+      else
+        node = get_node(index)
+        node.data = data
+      end
+      eval(inspect)
     end
 
     def inspect
@@ -42,11 +50,18 @@ module Ry
     end
 
     private
-      def get_last_node(current_node = @initial)
-        loop do
-          return current_node if current_node.next.nil?
-          current_node = current_node.next
+      def fill_out_indices(index, data)
+        last_node = get_node
+        (index - count).times do
+          last_node.next = Ry::Node.new(nil, last_node)
+          last_node = last_node.next
         end
+        last_node.next = Ry::Node.new(data, last_node)
+      end
+
+      def get_node(index = nil)
+        index ||= count - 1
+        eval("@initial" + ('.next' * index))
       end
 
       def all_string
@@ -70,9 +85,3 @@ module Ry
       end
   end
 end
-#
-# class NilClass
-#   def to_s
-#     'nil'
-#   end
-# end

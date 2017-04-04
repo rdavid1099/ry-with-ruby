@@ -29,6 +29,24 @@ class RyArrayTest < TestHelper
     assert_nil @array[8]
   end
 
+  def test_array_creates_nil_indices_if_indicated
+    new_array(count: 3, initial_data: 4)
+    @array[0] = 5
+    @array[2] = 8
+    @array[8] = 'test'
+
+    assert_equal 5, @array[0]
+    assert_equal 4, @array[1]
+    assert_equal 8, @array[2]
+    assert_nil @array[3]
+    assert_nil @array[4]
+    assert_nil @array[5]
+    assert_nil @array[6]
+    assert_nil @array[7]
+    assert_equal 'test', @array[8]
+    assert_equal 9, @array.count
+  end
+
   #[]=
   #abbrev
   #assoc
