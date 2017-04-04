@@ -4,7 +4,13 @@ require './config/setup'
 require 'pry'
 
 class TestHelper < Minitest::Test
-  def setup
-    @array = Ry::Array.new
+  def new_array(**data)
+    data[:count] ||= 0
+    data[:initial_data] ||= 'nil'
+    @array = Ry::Array.new(data[:count], data[:initial_data])
+  end
+
+  def new_node(**data)
+    @node = Ry::Node.new(data[:data], data[:prev], data[:next])
   end
 end

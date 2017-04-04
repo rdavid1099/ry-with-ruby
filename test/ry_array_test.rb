@@ -2,13 +2,14 @@ require_relative 'test_helper'
 
 class RyArrayTest < TestHelper
   def test_array_can_be_initialized_without_any_initial_values
+    new_array
     assert_instance_of Ry::Array, @array
   end
 
   def test_array_can_be_initialized_with_number_of_cells_default_to_nil
-    array = Ry::Array.new(3)
+    new_array(count: 3)
 
-    [nil, nil, nil].each_with_index { |data, i| assert_equal data, array[i] }
+    3.times { |i| assert_nil @array[i] }
   end
   # ::[]
   # ::new

@@ -1,3 +1,5 @@
+require './config/setup'
+
 module Ry
   class Array
     def initialize(count = 0, initial_data = 'nil')
@@ -13,7 +15,7 @@ module Ry
     end
 
     def [](index)
-      
+
     end
 
     def inspect
