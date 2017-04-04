@@ -6,19 +6,25 @@ module Ry
     end
 
     def initialize_array(size, initial_data)
-      size.times { @initial ? push(initial_data) : (@initial = Node.new(initial_data)) }
+      size.times { @initial ? push(initial_data) : (@initial = Ry::Node.new(initial_data)) }
     end
 
     def push(data)
-      return @initial = Node.new(data) unless @initial
+      return @initial = Ry::Node.new(data) unless @initial
       last_node = get_last_node
-      last_node.next = Node.new(data, last_node)
+      last_node.next = Ry::Node.new(data, last_node)
+      eval(inspect)
     end
 
     def [](index)
       return nil if index >= count
       node = "@initial" + ('.next' * index) + '.data'
       eval(node)
+    end
+
+    def []=(index, value)
+      return fill_out_indices(index, value) if index >= count
+      node = eval("@initial" + ('.next' * index))
     end
 
     def inspect
@@ -45,10 +51,11 @@ module Ry
 
       def all_string
         result = ''
-        return '' unless current_node = @initial
+        return result unless current_node = @initial
         loop do
-          result += current_node.next ? "#{current_node.data}, " : current_node.data
+          result += (current_node.next ? "#{current_node.data}, " : "#{current_node.data}")
           return result if current_node.next.nil?
+          current_node = current_node.next
         end
       end
   end
