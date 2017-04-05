@@ -60,6 +60,21 @@ class RyArrayTest < TestHelper
     assert_nil @array.pop
   end
 
+  def test_array_can_be_shifted
+    new_array
+    3.times { |i| @array.push(i) }
+
+    assert_equal 0, @array.shift
+    assert_equal 1, @array.first
+    assert_equal 2, @array.count
+    assert_equal 1, @array.shift
+    assert_equal 2, @array.first
+    assert_equal 1, @array.count
+    assert_equal 2, @array.shift
+    assert_equal 0, @array.count
+    assert_nil @array.shift
+  end
+
   def test_iterating_array_using_each
     new_array(count: 3, initial_data: 4)
     result = 0

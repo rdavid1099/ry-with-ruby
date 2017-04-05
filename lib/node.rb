@@ -8,7 +8,12 @@ module Ry
     end
 
     def clear!
+      if @prev && @next
+        @prev.next = @next
+        @next.prev = @prev
+      end
       @prev.next = nil if @prev
+      @next.prev = nil if @next
       @data = nil
       @next = nil
       @prev = nil

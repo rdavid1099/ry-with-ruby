@@ -72,6 +72,8 @@ module Ry
       self
     end
 
+    alias << push
+
     def pop
       return nil unless @initial
       if second_to_last_node = get_node.prev
@@ -81,6 +83,15 @@ module Ry
         data = @initial.data
         @initial = @initial.clear!
       end
+      data
+    end
+
+    def shift
+      return nil unless @initial
+      data = @initial.data
+      next_node = @initial.next
+      @initial.clear!
+      @initial = next_node
       data
     end
 
