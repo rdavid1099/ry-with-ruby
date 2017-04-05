@@ -20,11 +20,10 @@ module Ry
       counter = 0
       loop do
         block.call(current_node.data, counter)
-        break unless current_node.next
+        return self unless current_node.next
         counter += 1
         current_node = current_node.next
       end
-      self
     end
 
     def map(&block)
@@ -33,6 +32,17 @@ module Ry
       loop do
         result.push(block.call(current_node.data))
         return result unless current_node.next
+        current_node = current_node.next
+      end
+    end
+
+    def map!(&block)
+      return self unless current_node = @initial
+      counter = 0
+      loop do
+        self[counter] = block.call(current_node.data)
+        return self unless current_node.next
+        counter += 1
         current_node = current_node.next
       end
     end

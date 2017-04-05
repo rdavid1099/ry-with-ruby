@@ -93,6 +93,26 @@ class RyArrayTest < TestHelper
     assert_equal 4, return_array[3]
   end
 
+  def test_iterating_array_using_map!
+    new_array(count: 4, initial_data: 4)
+    counter = 0
+    return_array = @array.map! do |data|
+      result = if counter == 0
+                'hello'
+              elsif counter == 1
+                'world'
+              elsif counter == 2
+                data * 2
+              else
+                data
+              end
+      counter += 1
+      result
+    end
+
+    return_array.each_with_index { |data, i| assert_equal data, @array[i] }
+  end
+
   #assoc
   #at
   #clear
@@ -129,7 +149,6 @@ class RyArrayTest < TestHelper
   #keep_if
   #last
   #length
-  #map!
   #pack
   #permutation
   #pop
