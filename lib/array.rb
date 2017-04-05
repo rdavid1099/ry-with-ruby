@@ -95,6 +95,16 @@ module Ry
       data
     end
 
+    def unshift(*args)
+      @initial ||= Ry::Node.new(args.pop)
+      args.reverse.each do |data|
+        unshifted_node = Ry::Node.new(data, nil, @initial)
+        @initial.prev = unshifted_node
+        @initial = unshifted_node
+      end
+      self
+    end
+
     def [](index)
       return nil if index >= count
       node = get_node(index)

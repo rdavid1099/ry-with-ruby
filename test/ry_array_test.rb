@@ -75,6 +75,21 @@ class RyArrayTest < TestHelper
     assert_nil @array.shift
   end
 
+  def test_array_can_be_unshifted
+    new_array
+    3.times { |i| @array.unshift(i) }
+
+    assert_equal 2, @array[0]
+    assert_equal 1, @array[1]
+    assert_equal 0, @array[2]
+
+    @array.unshift('a', 'b')
+
+    assert_equal 'a', @array[0]
+    assert_equal 'b', @array[1]
+    assert_equal 2, @array[2]
+  end
+
   def test_iterating_array_using_each
     new_array(count: 3, initial_data: 4)
     result = 0
