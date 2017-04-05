@@ -72,6 +72,18 @@ module Ry
       self
     end
 
+    def pop
+      return nil unless @initial
+      if second_to_last_node = get_node.prev
+        data = second_to_last_node.next.data
+        second_to_last_node.next.clear!
+      else
+        data = @initial.data
+        @initial = @initial.clear!
+      end
+      data
+    end
+
     def [](index)
       return nil if index >= count
       node = get_node(index)
@@ -79,10 +91,10 @@ module Ry
     end
 
     def []=(index, data)
-      if index >= count
+      if index > count
         fill_out_indices(index, data)
       else
-        node = get_node(index)
+        node = get_node(index) || @initial = Ry::Node.new
         node.data = data
       end
       self
@@ -108,7 +120,7 @@ module Ry
       end
 
       def fill_out_indices(index, data)
-        last_node = get_node
+        last_node = count.zero? ? (@initial = Ry::Node.new(nil)) : get_node
         (index - count).times do
           last_node.next = Ry::Node.new(nil, last_node)
           last_node = last_node.next
