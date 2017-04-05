@@ -90,6 +90,11 @@ module Ry
       node.data
     end
 
+    alias at []
+
+    def first() self.[](0) end
+    def last() count.zero? ? nil : self.[](count - 1) end
+
     def []=(index, data)
       if index > count
         fill_out_indices(index, data)
@@ -109,6 +114,8 @@ module Ry
         current_node = current_node.next
       end
     end
+
+    alias length count
 
     def inspect
       "[#{all_string}]"

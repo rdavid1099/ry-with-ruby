@@ -220,8 +220,6 @@ class RyArrayTest < TestHelper
     @array.each { |data| assert_equal 4, data }
   end
 
-  #assoc
-  #at
   #clear
   #combination
   #compact
@@ -239,7 +237,6 @@ class RyArrayTest < TestHelper
   #fetch
   #fill
   #find_index
-  #first
   #flatten
   #flatten!
   #frozen?
@@ -251,11 +248,8 @@ class RyArrayTest < TestHelper
   #inspect
   #join
   #keep_if
-  #last
-  #length
   #pack
   #permutation
-  #pop
   #pretty_print
   #pretty_print_cycle
   #product
