@@ -6,10 +6,9 @@ module Ry
     end
 
     def each(&block)
-      return self unless current_node = @initial
-      loop do
+      current_node = @initial
+      while current_node
         block.call(current_node.data)
-        break unless current_node.next
         current_node = current_node.next
       end
       self
@@ -105,6 +104,17 @@ module Ry
       self
     end
 
+    def combination(size)
+      return Enumerator.new { |y| y } if size > count
+      Enumerator.new do |y|
+        result = []
+        while result
+          result = combo(size)
+          y <<
+        end
+      end
+    end
+
     def [](index)
       return nil if index >= count
       node = get_node(index)
@@ -122,6 +132,15 @@ module Ry
       else
         node = get_node(index) || @initial = Ry::Node.new
         node.data = data
+      end
+      self
+    end
+
+    def clear
+      while @initial
+        next_node = @initial.next
+        @initial.clear!
+        @initial = next_node
       end
       self
     end
