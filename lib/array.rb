@@ -27,6 +27,16 @@ module Ry
       self
     end
 
+    def map(&block)
+      return self unless current_node = @initial
+      result = Ry::Array.new
+      loop do
+        result.push(block.call(current_node.data))
+        return result unless current_node.next
+        current_node = current_node.next
+      end
+    end
+
     def push(data)
       unless @initial
         @initial = Ry::Node.new(data)
