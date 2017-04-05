@@ -36,6 +36,8 @@ module Ry
       end
     end
 
+    alias collect map
+
     def map!(&block)
       return self unless current_node = @initial
       counter = 0
@@ -46,6 +48,19 @@ module Ry
         current_node = current_node.next
       end
     end
+
+    alias collect! map!
+
+    def reduce(result, &block)
+      return self unless current_node = @initial
+      loop do
+        result = block.call(result, current_node.data)
+        return result unless current_node.next
+        current_node = current_node.next
+      end
+    end
+
+    alias inject reduce
 
     def push(data)
       unless @initial

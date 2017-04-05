@@ -113,16 +113,107 @@ class RyArrayTest < TestHelper
     return_array.each_with_index { |data, i| assert_equal data, @array[i] }
   end
 
+  def test_iterating_array_using_collect
+    new_array(count: 4, initial_data: 4)
+    counter = 0
+    return_array = @array.collect do |data|
+      result = if counter == 0
+                'hello'
+              elsif counter == 1
+                'world'
+              elsif counter == 2
+                data * 2
+              else
+                data
+              end
+      counter += 1
+      result
+    end
+
+    @array.each { |data| assert_equal 4, data }
+    assert_equal 'hello', return_array[0]
+    assert_equal 'world', return_array[1]
+    assert_equal 8, return_array[2]
+    assert_equal 4, return_array[3]
+  end
+
+  def test_iterating_array_using_collect!
+    new_array(count: 4, initial_data: 4)
+    counter = 0
+    return_array = @array.collect! do |data|
+      result = if counter == 0
+                'hello'
+              elsif counter == 1
+                'world'
+              elsif counter == 2
+                data * 2
+              else
+                data
+              end
+      counter += 1
+      result
+    end
+
+    return_array.each_with_index { |data, i| assert_equal data, @array[i] }
+  end
+
+  def test_iterating_array_using_reduce
+    new_array(count: 4, initial_data: 4)
+    sum = @array.reduce(0) do |result, data|
+      result += data
+    end
+    assert_equal 16, sum
+
+    difference = @array.reduce(0) do |result, data|
+      result -= data
+    end
+    assert_equal -16, difference
+
+    string = @array.reduce("") do |result, data|
+      result += data.to_s
+    end
+    assert_equal '4444', string
+
+    ry_array = @array.reduce(Ry::Array.new) do |result, data|
+      result.push(data)
+    end
+    ry_array.each { |data| assert_equal 4, data }
+
+    @array.each { |data| assert_equal 4, data }
+  end
+
+  def test_iterating_array_using_inject
+    new_array(count: 4, initial_data: 4)
+    sum = @array.inject(0) do |result, data|
+      result += data
+    end
+    assert_equal 16, sum
+
+    difference = @array.inject(0) do |result, data|
+      result -= data
+    end
+    assert_equal -16, difference
+
+    string = @array.inject("") do |result, data|
+      result += data.to_s
+    end
+    assert_equal '4444', string
+
+    ry_array = @array.inject(Ry::Array.new) do |result, data|
+      result.push(data)
+    end
+    ry_array.each { |data| assert_equal 4, data }
+
+    @array.each { |data| assert_equal 4, data }
+  end
+
   #assoc
   #at
   #clear
-  #collect
-  #collect!
   #combination
   #compact
   #compact!
   #concat
-  #count
   #cycle
   #dclone
   #delete
@@ -155,7 +246,6 @@ class RyArrayTest < TestHelper
   #pretty_print
   #pretty_print_cycle
   #product
-  #push
   #rassoc
   #reject
   #reject!
@@ -192,5 +282,4 @@ class RyArrayTest < TestHelper
   #unshift
   #values_at
   #zip
-  #|
 end
