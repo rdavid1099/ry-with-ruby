@@ -259,6 +259,7 @@ class RyArrayTest < TestHelper
   end
 
   def test_array_combination
+    skip
     new_array
     4.times { |i| @array << (i + 1)}
     combo_one = @array.combination(1)
@@ -276,9 +277,25 @@ class RyArrayTest < TestHelper
     assert_equal [], combo_five.to_a
   end
 
-  #combination
-  #compact
-  #compact!
+  def test_array_compact
+    new_array
+    4.times { |i| @array << (i.even? ? (i + 1) : nil)}
+
+    assert_equal 2, @array.compact.count
+    assert_equal 1, @array.compact.first
+    assert_equal 3, @array.compact.last
+  end
+
+  def test_array_compact!
+    new_array
+    4.times { |i| @array << (i.even? ? (i + 1) : nil)}
+    @array.compact!
+
+    assert_equal 2, @array.count
+    assert_equal 1, @array.first
+    assert_equal 3, @array.last
+  end
+
   #concat
   #cycle
   #dclone

@@ -106,13 +106,41 @@ module Ry
 
     def combination(size)
       return Enumerator.new { |y| y } if size > count
-      Enumerator.new do |y|
-        result = []
-        while result
-          result = combo(size)
-          y <<
+      index = 0
+      i = 0
+      a = Enumerator.new do |y|
+        combo_size(size).times do |index|
+          data = []
+          initial_data = self.[](index)
+          size.times do |i|
+            data << self.[](index + i)
+          end
+          y << data
         end
       end
+    end
+
+    def compact
+      return self unless @initial
+      result = Ry::Array.new
+      node = @initial
+      loop do
+        result << node.data unless node.data.nil?
+        return result unless node.next
+        node = node.next
+      end
+    end
+
+    def compact!
+      return self unless @initial
+      result = Ry::Array.new
+      node = @initial
+      loop do
+        result << node.data unless node.data.nil?
+        break unless node.next
+        node = node.next
+      end
+      self.replace(result)
     end
 
     def [](index)
@@ -161,6 +189,14 @@ module Ry
       "[#{all_string}]"
     end
 
+    def replace(new_data)
+      self.clear
+      new_data.each do |data|
+        self << data
+      end
+      self
+    end
+
     private
       def initialize_array(size, initial_data)
         size.times { @initial ? push(initial_data) : (@initial = Ry::Node.new(initial_data)) }
@@ -188,6 +224,22 @@ module Ry
           return result.chomp(', ') if current_node.next.nil?
           current_node = current_node.next
         end
+      end
+
+      def combo(size, index)
+        data = []
+        initial = '@initial' + ('.next' * index)
+        (count - (size - 1)).times do |i|
+          data << eval(initial + ('.next' * i) + '.data')
+        end
+        data
+      end
+
+      def combo_size(size)
+        a = (1..count).inject(:*) || 1
+        b = (1..size).inject(:*) || 1
+        c = (1..(count - size)).inject(:*) || 1
+        a / (b * c)
       end
   end
 end
